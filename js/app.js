@@ -28,7 +28,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $http) {
 
     $scope.includeConfig = true;
     $scope.includeState = true;
-    $scope.includeLog = false;
+    $scope.includeLog = true;
 
     $scope.categories = ["<All Categories>", "<No Category>"];
     $scope.privacyFilter =
@@ -1065,7 +1065,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $http) {
         "BACKLOG_FOLDER": {
             "TYPE": BACKLOG,
             "ACTIVE": true,
-            "NAME": "",
+            "NAME": "BACKLOG",
             "TITLE": "BACKLOG",
             "LIMIT": 0,
             "SORT": "duedate,-priority",
@@ -1082,7 +1082,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $http) {
         "NEXT_FOLDER": {
             "TYPE": "SPRINT",
             "ACTIVE": true,
-            "NAME": "Kanban",
+            "NAME": "NEXT",
             "TITLE": "NEXT",
             "LIMIT": 20,
             "SORT": "duedate,-priority",
@@ -1099,7 +1099,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $http) {
         "INPROGRESS_FOLDER": {
             "TYPE": "DOING",
             "ACTIVE": true,
-            "NAME": "Kanban",
+            "NAME": "IN PROGRESS",
             "TITLE": "IN PROGRESS",
             "LIMIT": 5,
             "SORT": "-priority",
@@ -1116,7 +1116,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $http) {
         "WAITING_FOLDER": {
             "TYPE": "WAITING",
             "ACTIVE": true,
-            "NAME": "Kanban",
+            "NAME": "WAITING",
             "TITLE": "WAITING",
             "LIMIT": 0,
             "SORT": "-priority",
@@ -1133,7 +1133,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $http) {
         "COMPLETED_FOLDER": {
             "TYPE": "DONE",
             "ACTIVE": true,
-            "NAME": "Kanban",
+            "NAME": "COMPLETED",
             "TITLE": "COMPLETED",
             "LIMIT": 0,
             "SORT": "-completeddate,-priority,subject",
@@ -1296,23 +1296,23 @@ tbApp.controller('taskboardController', function ($scope, $filter, $http) {
             var isChanged = false;
             // MIGRATION1: some older configs have no folder name for the Kanban task lanes
             if ($scope.config.NEXT_FOLDER.NAME == "") {
-                $scope.config.NEXT_FOLDER.NAME = "Kanban";
-                $scope.taskFolders[SPRINT].name = "Kanban";
+                $scope.config.NEXT_FOLDER.NAME = "NEXT";
+                $scope.taskFolders[SPRINT].name = "NEXT";
                 isChanged = true;
             }
             if ($scope.config.INPROGRESS_FOLDER.NAME == "") {
-                $scope.config.INPROGRESS_FOLDER.NAME = "Kanban";
-                $scope.taskFolders[DOING].name = "Kanban";
+                $scope.config.INPROGRESS_FOLDER.NAME = "IN PROGRESS";
+                $scope.taskFolders[DOING].name = "IN PROGRESS";
                 isChanged = true;
             }
             if ($scope.config.WAITING_FOLDER.NAME == "") {
-                $scope.config.WAITING_FOLDER.NAME = "Kanban";
-                $scope.taskFolders[WAITING].name = "Kanban";
+                $scope.config.WAITING_FOLDER.NAME = "WAITING";
+                $scope.taskFolders[WAITING].name = "WAITING";
                 isChanged = true;
             }
             if ($scope.config.COMPLETED_FOLDER.NAME == "") {
-                $scope.config.COMPLETED_FOLDER.NAME = "Kanban";
-                $scope.taskFolders[DONE].name = "Kanban";
+                $scope.config.COMPLETED_FOLDER.NAME = "COMPLETED";
+                $scope.taskFolders[DONE].name = "COMPLETED";
                 isChanged = true;
             }
             // MIGRATION2: limit could be text in previous versions
@@ -1325,8 +1325,8 @@ tbApp.controller('taskboardController', function ($scope, $filter, $http) {
                 isChanged = true;
             }
             // MIGRATION3: some older configs have non-default folder names for the Kanban task lanes
-            var kanbanFolder = getTaskFolder('Kanban');
-            if ($scope.config.NEXT_FOLDER.NAME != "Kanban") {
+            var kanbanFolder = getTaskFolder('NEXT');
+            if ($scope.config.NEXT_FOLDER.NAME != "NEXT") {
                 var tasks = getTaskItems($scope.config.NEXT_FOLDER.NAME);
                 if (tasks.Count > 0) {
                     do {
@@ -1336,11 +1336,11 @@ tbApp.controller('taskboardController', function ($scope, $filter, $http) {
                     } while (tasks.Count > 0);
                 }
                 getTaskFolder($scope.config.NEXT_FOLDER.NAME).Delete();
-                $scope.config.NEXT_FOLDER.NAME = "Kanban";
-                $scope.taskFolders[SPRINT].name = "Kanban";
+                $scope.config.NEXT_FOLDER.NAME = "NEXT";
+                $scope.taskFolders[SPRINT].name = "NEXT";
                 isChanged = true;
             }
-            if ($scope.config.INPROGRESS_FOLDER.NAME != "Kanban") {
+            if ($scope.config.INPROGRESS_FOLDER.NAME != "IN PROGRESS") {
                 var tasks = getTaskItems($scope.config.INPROGRESS_FOLDER.NAME);
                 if (tasks.Count > 0) {
                     do {
@@ -1350,11 +1350,11 @@ tbApp.controller('taskboardController', function ($scope, $filter, $http) {
                     } while (tasks.Count > 0);
                 }
                 getTaskFolder($scope.config.INPROGRESS_FOLDER.NAME).Delete();
-                $scope.config.INPROGRESS_FOLDER.NAME = "Kanban";
-                $scope.taskFolders[DOING].name = "Kanban";
+                $scope.config.INPROGRESS_FOLDER.NAME = "IN PROGRESS";
+                $scope.taskFolders[DOING].name = "IN PROGRESS";
                 isChanged = true;
             }
-            if ($scope.config.WAITING_FOLDER.NAME != "Kanban") {
+            if ($scope.config.WAITING_FOLDER.NAME != "WAITING") {
                 var tasks = getTaskItems($scope.config.WAITING_FOLDER.NAME);
                 if (tasks.Count > 0) {
                     do {
@@ -1364,11 +1364,11 @@ tbApp.controller('taskboardController', function ($scope, $filter, $http) {
                     } while (tasks.Count > 0);
                 }
                 getTaskFolder($scope.config.WAITING_FOLDER.NAME).Delete();
-                $scope.config.WAITING_FOLDER.NAME = "Kanban";
-                $scope.taskFolders[WAITING].name = "Kanban";
+                $scope.config.WAITING_FOLDER.NAME = "WAITING";
+                $scope.taskFolders[WAITING].name = "WAITING";
                 isChanged = true;
             }
-            if ($scope.config.COMPLETED_FOLDER.NAME != "Kanban") {
+            if ($scope.config.COMPLETED_FOLDER.NAME != "COMPLETED") {
                 var tasks = getTaskItems($scope.config.COMPLETED_FOLDER.NAME);
                 if (tasks.Count > 0) {
                     do {
@@ -1378,8 +1378,8 @@ tbApp.controller('taskboardController', function ($scope, $filter, $http) {
                     } while (tasks.Count > 0);
                 }
                 getTaskFolder($scope.config.COMPLETED_FOLDER.NAME).Delete();
-                $scope.config.COMPLETED_FOLDER.NAME = "Kanban";
-                $scope.taskFolders[DONE].name = "Kanban";
+                $scope.config.COMPLETED_FOLDER.NAME = "COMPLETED";
+                $scope.taskFolders[DONE].name = "COMPLETED";
                 isChanged = true;
             }
             // MIGRATION 4: If Someday folder exists, then move all tasks to status Defered
